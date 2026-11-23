@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Name · Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   THEME TOKENS  (accent = indigo; change --accent to recolor)
+   ========================================================= */
+:root{
+  --accent:#4f46e5; --accent-soft:#eef2ff;
+  --bg:#ffffff; --bg-alt:#f7f8fc; --card:#ffffff; --text:#151829; --muted:#5d6280;
+  --border:#e4e6f0; --shadow:0 6px 24px rgba(20,24,60,.08); --radius:14px;
+}
+[data-theme="dark"]{
+  --accent:#818cf8; --accent-soft:#1e1f3b;
+  --bg:#0d0f1a; --bg-alt:#121526; --card:#171a2e; --text:#e9ebf8; --muted:#9a9fc0;
+  --border:#262a45; --shadow:0 6px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;transition:background .2s,color .2s}
+img{max-width:100%;display:block}
+a{color:var(--accent);text-decoration:none}
+button,input,textarea,select{font:inherit;color:inherit}
+.wrap{max-width:1140px;margin:auto;padding:0 20px}
+section{padding:88px 0}
+section:nth-of-type(even){background:var(--bg-alt)}
+h2{font-size:2rem;margin:0 0 8px}
+.sub{color:var(--muted);margin:0 0 36px}
+.hidden{display:none!important}
+
+/* ---------- Buttons / chips / inputs ---------- */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:11px 22px;border-radius:10px;border:1px solid var(--accent);background:var(--accent);color:#fff;font-weight:600;cursor:pointer;transition:transform .15s,opacity .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn.sm{padding:6px 12px;font-size:.85rem}
+.btn.danger{background:#dc2626;border-color:#dc2626}
+.chip{display:inline-block;padding:4px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:.8rem;font-weight:500;border:1px solid transparent}
+button.chip{cursor:pointer}
+button.chip.on{background:var(--accent);color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+input,textarea,select{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:10px;background:var(--card)}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);border-color:transparent}
+label{font-size:.85rem;font-weight:600;display:block;margin-bottom:4px}
+
+/* ---------- Navbar ---------- */
+header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-weight:800;font-size:1.15rem;color:var(--text)}
+.logo span{color:var(--accent)}
+.links{display:flex;gap:4px;align-items:center}
+.links a{color:var(--muted);padding:6px 12px;border-radius:8px;font-weight:500;font-size:.93rem}
+.links a:hover,.links a.active{color:var(--accent);background:var(--accent-soft)}
+.icon-btn{background:none;border:1px solid var(--border);border-radius:8px;width:36px;height:36px;cursor:pointer}
+#menuBtn{display:none}
+@media(max-width:820px){
+  #menuBtn{display:block}
+  .links{position:absolute;top:64px;left:0;right:0;flex-direction:column;background:var(--bg);border-bottom:1px solid var(--border);padding:10px;display:none}
+  .links.open{display:flex}
+}
+
+/* ---------- Admin bar ---------- */
+#adminBar{background:var(--accent);color:#fff;font-size:.9rem}
+#adminBar .wrap{display:flex;justify-content:space-between;align-items:center;padding:8px 20px;gap:10px;flex-wrap:wrap}
+#adminBar .btn{background:#fff;color:var(--accent);border-color:#fff}
+
+/* ---------- Hero ---------- */
+#home{padding:120px 0 100px;background:radial-gradient(circle at 80% 10%,var(--accent-soft),transparent 55%)}
+#home h1{font-size:clamp(2.4rem,6vw,4rem);line-height:1.1;margin:10px 0}
+#home h1 span{color:var(--accent)}
+#home .role{font-size:1.25rem;color:var(--muted);margin:0}
+#home .intro{max-width:600px;color:var(--muted);margin:18px 0 30px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+
+/* ---------- About ---------- */
+.about{display:grid;grid-template-columns:280px 1fr;gap:48px;align-items:center}
+.photo{aspect-ratio:1;border-radius:20px;background:linear-gradient(135deg,var(--accent),#a78bfa);display:grid;place-items:center;color:#fff;font-size:4rem;font-weight:800}
+.what li{margin-bottom:6px}
+@media(max-width:720px){.about{grid-template-columns:1fr}.photo{max-width:220px}}
+
+/* ---------- Skills ---------- */
+.skill-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+.box h3{margin:0 0 14px}
+
+/* ---------- Projects ---------- */
+.toolbar{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:28px}
+.toolbar input{max-width:280px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:24px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;cursor:pointer;transition:transform .2s,box-shadow .2s;position:relative}
+.card:hover{transform:translateY(-5px);box-shadow:0 14px 36px rgba(79,70,229,.18)}
+.thumb{aspect-ratio:16/9;object-fit:cover;width:100%;background:var(--accent-soft)}
+.card-body{padding:18px;display:flex;flex-direction:column;gap:10px;flex:1}
+.card h3{margin:0;font-size:1.15rem}
+.card p{margin:0;color:var(--muted);font-size:.93rem}
+.meta{display:flex;justify-content:space-between;align-items:center;margin-top:auto;font-size:.85rem;color:var(--muted)}
+.meta a{font-weight:600;margin-left:12px}
+.badge{position:absolute;top:12px;left:12px;background:#f59e0b;color:#fff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:999px}
+.admin-actions{display:flex;gap:6px;flex-wrap:wrap;padding:0 18px 18px}
+.empty{color:var(--muted);text-align:center;padding:40px}
+
+/* ---------- Timeline ---------- */
+.timeline{border-left:2px solid var(--border);margin-left:8px;padding-left:28px}
+.tl{position:relative;margin-bottom:32px}
+.tl::before{content:"";position:absolute;left:-36px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--accent);border:3px solid var(--bg)}
+.tl small{color:var(--accent);font-weight:600}
+.tl h3{margin:2px 0}.tl p{margin:0;color:var(--muted)}
+
+/* ---------- Contact ---------- */
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.contact form{display:grid;gap:14px}
+.socials{display:flex;gap:10px;margin-top:16px}
+.socials a{width:42px;height:42px;border-radius:10px;border:1px solid var(--border);display:grid;place-items:center;color:var(--text);transition:all .15s}
+.socials a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.socials svg{width:20px;height:20px;fill:currentColor}
+@media(max-width:720px){.contact{grid-template-columns:1fr}}
+
+footer{padding:32px 0;border-top:1px solid var(--border);color:var(--muted)}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+footer .socials{margin:0}
+
+/* ---------- Modals ---------- */
+dialog{border:0;border-radius:18px;padding:0;background:var(--card);color:var(--text);width:min(760px,94vw);max-height:90vh;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+dialog::backdrop{background:rgba(10,12,30,.6);backdrop-filter:blur(3px)}
+.modal{padding:28px;overflow:auto;max-height:90vh}
+.modal-head{display:flex;justify-content:space-between;align-items:start;gap:12px}
+.modal-head h2{font-size:1.6rem}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin:16px 0}
+.gallery img{border-radius:10px;aspect-ratio:16/9;object-fit:cover;width:100%}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-grid .full{grid-column:1/-1}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}}
+.previews{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.previews div{position:relative}
+.previews img{width:90px;height:56px;object-fit:cover;border-radius:6px}
+.previews button{position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;border:0;background:#dc2626;color:#fff;cursor:pointer;font-size:12px;line-height:1}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 20px;border-radius:10px;z-index:100;font-weight:500}
+/* ---------- Website editor (admin) ---------- */
+#siteForm h3{margin:24px 0 10px;font-size:1.1rem}
+.srow{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.srow input{flex:1}
+.grp{border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px}
+.grp .chip{display:inline-flex;align-items:center;gap:4px}
+.grp .chip .x{background:none;border:0;color:inherit;cursor:pointer;font-weight:700;padding:0 0 0 2px}
+</style>
+</head>
+<body>
+
+<!-- Admin bar: only visible while logged in as admin -->
+<div id="adminBar" class="hidden"><div class="wrap">
+  <span>🔧 <b>Admin mode</b>: you can add, edit, reorder and delete projects.</span>
+  <span style="display:flex;gap:8px">
+    <button class="btn sm" onclick="openSiteEditor()">✏️ Edit website</button>
+    <button class="btn sm" onclick="openEditor()">+ Add project</button>
+    <button class="btn sm" onclick="logout()">Exit admin</button>
+  </span>
+</div></div>
+
+<header><div class="wrap nav">
+  <a href="#home" class="logo" id="logo">YN<span>.</span></a>
+  <nav class="links" id="links">
+    <a href="#home">Home</a><a href="#about">About</a><a href="#skills">Skills</a>
+    <a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#contact">Contact</a>
+    <button class="icon-btn" id="themeBtn" title="Toggle theme">🌙</button>
+    <button class="icon-btn" title="Admin login" onclick="adminClick()">🔒</button>
+  </nav>
+  <button class="icon-btn" id="menuBtn" aria-label="Menu">☰</button>
+</div></header>
+
+<main>
+<!-- ================= HERO ================= -->
+<section id="home"><div class="wrap">
+  <span class="chip" id="heroLoc"></span>
+  <h1>Hi, I'm <span id="heroName"></span></h1>
+  <p class="role" id="heroRole"></p>
+  <p class="intro" id="heroIntro"></p>
+  <div class="hero-btns">
+    <a href="#projects" class="btn">View Projects</a>
+    <a href="#contact" class="btn ghost">Contact Me</a>
+  </div>
+</div></section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about"><div class="wrap about">
+  <div class="photo" id="photo"></div>
+  <div>
+    <h2>About me</h2>
+    <p id="bio"></p>
+    <h3>What I do</h3>
+    <ul class="what" id="whatIDo"></ul>
+    <a class="btn ghost" id="resumeBtn" target="_blank">📄 Download résumé</a>
+  </div>
+</div></section>
+
+<!-- ================= SKILLS ================= -->
+<section id="skills"><div class="wrap">
+  <h2>Skills</h2><p class="sub">Technologies and tools I work with.</p>
+  <div class="skill-grid" id="skillGrid"></div>
+</div></section>
+
+<!-- ================= PROJECTS ================= -->
+<section id="projects"><div class="wrap">
+  <h2>Projects</h2><p class="sub">Things I've built, newest and featured first.</p>
+  <div class="toolbar">
+    <input id="search" type="search" placeholder="🔍 Search projects...">
+    <div class="chips" id="filters"></div>
+  </div>
+  <div class="grid" id="grid"></div>
+</div></section>
+
+<!-- ================= EXPERIENCE ================= -->
+<section id="experience"><div class="wrap">
+  <h2>Experience & Education</h2><p class="sub">My journey so far.</p>
+  <div class="timeline" id="timeline"></div>
+</div></section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact"><div class="wrap contact">
+  <div>
+    <h2>Let's work together</h2>
+    <p class="sub">Have a project, a job opportunity or a question? Send me a message.</p>
+    <p>📧 <a id="mailLink"></a></p>
+    <div class="socials" id="contactSocials"></div>
+  </div>
+  <form id="contactForm">
+    <div><label>Name</label><input name="name" required></div>
+    <div><label>Email</label><input name="email" type="email" required></div>
+    <div><label>Message</label><textarea name="message" rows="5" required></textarea></div>
+    <button class="btn">Send message</button>
+  </form>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <span>© <span id="year"></span> <span id="footName"></span>. All rights reserved.</span>
+  <div class="socials" id="footSocials"></div>
+</div></footer>
+
+<!-- Project detail modal -->
+<dialog id="detailDlg"><div class="modal" id="detailBody"></div></dialog>
+
+<!-- Add / edit project modal (admin only) -->
+<dialog id="editDlg"><form class="modal" id="editForm">
+  <div class="modal-head"><h2 id="editTitle">Add project</h2><button type="button" class="icon-btn" onclick="editDlg.close()">✕</button></div>
+  <div class="form-grid">
+    <div class="full"><label>Title *</label><input name="title" required></div>
+    <div class="full"><label>Short description * (shown on the card)</label><input name="summary" required maxlength="160"></div>
+    <div class="full"><label>Full description (detail view; blank lines start new paragraphs)</label><textarea name="description" rows="5"></textarea></div>
+    <div class="full"><label>Tech tags (comma separated)</label><input name="tags" placeholder="Java, Spring Boot, PostgreSQL"></div>
+    <div><label>Category</label><input name="category" list="catList" placeholder="Web App"><datalist id="catList"></datalist></div>
+    <div><label>Date</label><input name="date" type="month"></div>
+    <div><label>Live demo URL</label><input name="live" type="url" placeholder="https://"></div>
+    <div><label>GitHub URL</label><input name="github" type="url" placeholder="https://github.com/..."></div>
+    <div class="full"><label>Images (the first one is the thumbnail)</label>
+      <input type="file" id="imgInput" accept="image/*" multiple>
+      <div class="previews" id="previews"></div></div>
+    <div class="full"><label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" name="featured" style="width:auto"> ⭐ Featured (shown first)</label></div>
+  </div>
+  <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px">
+    <button type="button" class="btn ghost" onclick="editDlg.close()">Cancel</button>
+    <button class="btn">Save project</button>
+  </div>
+</form></dialog>
+
+<!-- Website editor (admin only): profile, what I do, skills, timeline, password -->
+<dialog id="siteDlg"><form class="modal" id="siteForm" style="width:min(760px,94vw)">
+  <div class="modal-head"><h2>Edit website</h2><button type="button" class="icon-btn" onclick="siteDlg.close()">✕</button></div>
+  <p class="sub" style="margin:4px 0 0">Change anything below, then click <b>Save website</b>.</p>
+
+  <h3>Profile</h3>
+  <div class="form-grid">
+    <div><label>Name</label><input name="name"></div>
+    <div><label>Logo initials</label><input name="initials" maxlength="3"></div>
+    <div><label>Role / title</label><input name="role"></div>
+    <div><label>City / location</label><input name="location" placeholder="City, Country"></div>
+    <div class="full"><label>Intro (under your name)</label><input name="intro"></div>
+    <div class="full"><label>Bio (About section)</label><textarea name="bio" rows="3"></textarea></div>
+    <div><label>Email</label><input name="email" type="email"></div>
+    <div><label>Résumé (file name or link)</label><input name="resume" placeholder="resume.pdf"></div>
+    <div><label>GitHub URL</label><input name="github"></div>
+    <div><label>LinkedIn URL</label><input name="linkedin"></div>
+  </div>
+
+  <h3>What I do</h3>
+  <div id="whatRows"></div>
+  <button type="button" class="btn sm ghost" onclick="addWhat()">+ Add item</button>
+
+  <h3>Skills</h3>
+  <div id="skillRows"></div>
+  <button type="button" class="btn sm ghost" onclick="addSkillGroup()">+ Add skill group</button>
+
+  <h3>Experience &amp; education</h3>
+  <div id="timelineRows"></div>
+  <button type="button" class="btn sm ghost" onclick="addTimelineRow()">+ Add entry</button>
+
+  <h3>Admin password</h3>
+  <div class="form-grid">
+    <div class="full"><label>New password (leave blank to keep the current one)</label><input name="newpw" type="password" autocomplete="new-password"></div>
+  </div>
+
+  <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:22px">
+    <button type="button" class="btn ghost" onclick="siteDlg.close()">Cancel</button>
+    <button class="btn">Save website</button>
+  </div>
+</form></dialog>
+
+<!-- Admin login modal -->
+<dialog id="loginDlg"><form class="modal" id="loginForm" style="width:min(380px,90vw)">
+  <h2>Admin login</h2>
+  <p class="sub" style="margin-bottom:16px">Enter your admin password.</p>
+  <input type="password" name="pw" required autocomplete="current-password">
+  <p id="loginErr" style="color:#dc2626;margin:8px 0 0" class="hidden">Wrong password.</p>
+  <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:18px">
+    <button type="button" class="btn ghost" onclick="loginDlg.close()">Cancel</button>
+    <button class="btn">Log in</button>
+  </div>
+</form></dialog>
+
+<script>
+/* =====================================================================
+   1. PROFILE: edit your personal details here
+   ===================================================================== */
+const PROFILE = {
+  name: "Your Name",
+  initials: "YN",
+  role: "Full-Stack Java Developer",
+  location: "City, Country",
+  intro: "I build secure, scalable web applications with Java, Spring Boot and modern front-end tools.",
+  bio: "I'm a developer who enjoys turning ideas into reliable products. I work across the stack, from REST APIs and databases to clean, responsive UIs, and I'm always learning something new.",
+  whatIDo: ["Backend development with Spring Boot & REST APIs","Responsive front-ends with HTML, CSS, JavaScript & Thymeleaf","Database design with PostgreSQL / MySQL","Containerised deployments with Docker"],
+  email: "you@example.com",
+  github: "https://github.com/your-username",
+  linkedin: "https://linkedin.com/in/your-profile",
+  resume: "resume.pdf",        // put resume.pdf next to index.html
+  skills: {
+    Frontend: ["HTML","CSS","JavaScript","Thymeleaf","Bootstrap"],
+    Backend:  ["Java","Spring Boot","Spring Security","JPA / Hibernate","REST APIs","PostgreSQL"],
+    Tools:    ["Git","Docker","Maven","Postman","IntelliJ IDEA"]
+  },
+  timeline: [
+    {when:"2025 – Present", title:"Software Developer · Company Name", text:"Building web applications with Java and Spring Boot."},
+    {when:"2024", title:"Intern · Company Name", text:"Worked on REST APIs and database features."},
+    {when:"2020 – 2024", title:"B.Tech in Computer Science · University Name", text:"Graduated with a focus on software engineering."}
+  ]
+};
+
+/* Admin password: CHANGE THIS before you deploy.
+   NOTE: on a static site this only hides the edit buttons. It is not real
+   security, and edits are saved in YOUR browser only (see the README). */
+const ADMIN_PASSWORD = "admin123";
+
+/* =====================================================================
+   2. STORAGE LAYER: every read and write of projects goes through here.
+   To move to Firebase/Supabase later, rewrite these 3 async methods only.
+   ===================================================================== */
+const Store = {
+  KEY: "portfolio.projects.v1",
+  async getAll(){
+    try{ const raw = localStorage.getItem(this.KEY); if(raw) return JSON.parse(raw); }catch(e){}
+    return null; // null means "nothing saved yet", so we load the sample projects
+  },
+  async saveAll(list){
+    try{ localStorage.setItem(this.KEY, JSON.stringify(list)); return true; }
+    catch(e){
+      toast(e && e.name === "QuotaExceededError"
+        ? "⚠️ Storage is full. Use fewer or smaller images."
+        : "⚠️ This browser is blocking storage, so changes won't be saved.");
+      return false;
+    }
+  },
+  async reset(){ try{ localStorage.removeItem(this.KEY); }catch(e){} },
+  /* Website text (name, city, skills, timeline...) edited from the admin panel */
+  async getProfile(){ try{ const raw = localStorage.getItem("portfolio.profile.v1"); if(raw) return JSON.parse(raw); }catch(e){} return null; },
+  async saveProfile(p){
+    try{ localStorage.setItem("portfolio.profile.v1", JSON.stringify(p)); return true; }
+    catch(e){ toast("⚠️ Could not save the website text in this browser."); return false; }
+  },
+  /* Admin password changed from the admin panel (falls back to ADMIN_PASSWORD) */
+  async getPassword(){ try{ return localStorage.getItem("portfolio.password.v1"); }catch(e){ return null; } },
+  async savePassword(pw){ try{ localStorage.setItem("portfolio.password.v1", pw); }catch(e){} }
+};
+/* Example Supabase version:
+   async getAll(){ const {data} = await supabase.from('projects').select('*'); return data; }
+   async saveAll(list){ await supabase.from('projects').upsert(list); return true; }  */
+
+/* Placeholder thumbnail (an SVG gradient with the project's initials) */
+function placeholder(text, hue){
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 360'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='hsl(${hue},70%,55%)'/><stop offset='1' stop-color='hsl(${hue+40},70%,45%)'/></linearGradient></defs><rect width='640' height='360' fill='url(#g)'/><text x='50%' y='54%' font-family='Inter,Arial' font-size='64' font-weight='800' fill='white' text-anchor='middle'>${text}</text></svg>`;
+  return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+}
+
+/* =====================================================================
+   3. SAMPLE PROJECTS: loaded only on first visit
+   ===================================================================== */
+const SAMPLE_PROJECTS = [
+  { id: uid(), title:"E-Commerce Shopping Cart", category:"Web App", date:"2025-10", featured:true,
+    summary:"Full-stack online store with a customer shop, an admin panel and a secured REST API.",
+    description:"A complete e-commerce platform built with Spring Boot.\n\nFeatures: user registration and login with role-based access, password reset by email, a product catalogue with categories and search, a shopping cart, checkout, order tracking and cancellation, and an admin dashboard for products, categories, users and order status.\n\nIt also exposes a documented REST API (Swagger/OpenAPI) and ships with Docker Compose.",
+    tags:["Java","Spring Boot","Spring Security","PostgreSQL","Thymeleaf","Docker"],
+    images:[placeholder("Shopping Cart",235)], live:"", github:"https://github.com/your-username/shopping-cart-spring-boot" },
+  { id: uid(), title:"Task Manager API", category:"Backend", date:"2025-06", featured:false,
+    summary:"REST API for teams to manage tasks, with JWT authentication and pagination.",
+    description:"A RESTful backend for task management.\n\nIncludes JWT login, CRUD for projects and tasks, filtering and pagination, validation, global error handling and unit tests.",
+    tags:["Java","Spring Boot","JWT","MySQL"],
+    images:[placeholder("Task API",170)], live:"", github:"https://github.com/your-username/task-manager-api" },
+  { id: uid(), title:"Weather Dashboard", category:"Frontend", date:"2025-02", featured:false,
+    summary:"Responsive weather app with a 5-day forecast and city search.",
+    description:"A small front-end project that calls a public weather API.\n\nIt shows current conditions and a 5-day forecast, remembers recent searches and supports dark mode.",
+    tags:["JavaScript","HTML","CSS","REST API"],
+    images:[placeholder("Weather",28)], live:"https://example.com", github:"https://github.com/your-username/weather-dashboard" }
+];
+
+/* =====================================================================
+   4. APP STATE + HELPERS
+   ===================================================================== */
+let projects = [];
+let profile = PROFILE;                  // the website text; replaced by the saved copy on load
+let adminPassword = ADMIN_PASSWORD;     // replaced by the saved password on load
+let editor = null;                      // working copy while the website editor is open
+const PROFILE_FIELDS = ["name","initials","role","location","intro","bio","email","resume","github","linkedin"];
+// Storage can be blocked (private mode, file previews), so never let it crash the page
+const safe = (fn, fallback=null) => { try { return fn(); } catch(e){ return fallback; } };
+let isAdmin = safe(() => sessionStorage.getItem("portfolio.admin")) === "1";
+let activeFilter = "All";
+let editingId = null;
+let editImages = [];
+
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmtDate = d => d ? new Date(d + "-01").toLocaleDateString("en", {month:"short", year:"numeric"}) : "";
+function toast(msg){ const t=document.createElement("div"); t.className="toast"; t.textContent=msg; document.body.append(t); setTimeout(()=>t.remove(),2600); }
+
+const ICONS = {
+  github:'<svg viewBox="0 0 24 24"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.6 18.3 5 18.3 5c.7 1.7.3 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/></svg>',
+  linkedin:'<svg viewBox="0 0 24 24"><path d="M20.4 20.5h-3.6v-5.6c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9v5.7H9.3V9h3.4v1.6h.1c.5-.9 1.6-1.8 3.4-1.8 3.6 0 4.3 2.4 4.3 5.5v6.2zM5.3 7.4a2.1 2.1 0 1 1 0-4.2 2.1 2.1 0 0 1 0 4.2zM7.1 20.5H3.5V9h3.6v11.5zM22.2 0H1.8C.8 0 0 .8 0 1.7v20.6c0 .9.8 1.7 1.8 1.7h20.4c1 0 1.8-.8 1.8-1.7V1.7C24 .8 23.2 0 22.2 0z"/></svg>',
+  mail:'<svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>'
+};
+
+/* =====================================================================
+   5. RENDER STATIC SECTIONS FROM PROFILE
+   ===================================================================== */
+function renderProfile(){
+  const P = profile;
+  document.title = `${P.name} · Portfolio`;
+  $("#logo").innerHTML = `${esc(P.initials)}<span>.</span>`;
+  $("#heroName").textContent = P.name; $("#heroRole").textContent = P.role;
+  $("#heroIntro").textContent = P.intro; $("#heroLoc").textContent = "📍 " + P.location;
+  $("#photo").textContent = P.initials;   // swap for <img src="me.jpg"> if you like
+  $("#bio").textContent = P.bio;
+  $("#whatIDo").innerHTML = P.whatIDo.map(w => `<li>${esc(w)}</li>`).join("");
+  $("#resumeBtn").href = P.resume;
+  $("#skillGrid").innerHTML = Object.entries(P.skills).map(([cat, list]) =>
+    `<div class="box"><h3>${esc(cat)}</h3><div class="chips">${list.map(s=>`<span class="chip">${esc(s)}</span>`).join("")}</div></div>`).join("");
+  $("#timeline").innerHTML = P.timeline.map(t =>
+    `<div class="tl"><small>${esc(t.when)}</small><h3>${esc(t.title)}</h3><p>${esc(t.text)}</p></div>`).join("");
+  $("#mailLink").textContent = P.email; $("#mailLink").href = "mailto:" + P.email;
+  const soc = `<a href="${esc(P.github)}" target="_blank" aria-label="GitHub">${ICONS.github}</a>
+               <a href="${esc(P.linkedin)}" target="_blank" aria-label="LinkedIn">${ICONS.linkedin}</a>
+               <a href="mailto:${esc(P.email)}" aria-label="Email">${ICONS.mail}</a>`;
+  $("#contactSocials").innerHTML = soc; $("#footSocials").innerHTML = soc;
+  $("#footName").textContent = P.name; $("#year").textContent = new Date().getFullYear();
+}
+
+/* =====================================================================
+   6. PROJECTS: filter, search, grid, detail view
+   ===================================================================== */
+// Featured projects first, then manual order (the array order)
+const ordered = () => [...projects].sort((a,b) => (b.featured?1:0) - (a.featured?1:0));
+
+function renderFilters(){
+  const set = new Set(); projects.forEach(p => { if(p.category) set.add(p.category); p.tags.forEach(t=>set.add(t)); });
+  const all = ["All", ...set];
+  if(!all.includes(activeFilter)) activeFilter = "All";
+  $("#filters").innerHTML = all.map(f => `<button class="chip ${f===activeFilter?"on":""}" data-f="${esc(f)}">${esc(f)}</button>`).join("");
+  $("#catList").innerHTML = [...new Set(projects.map(p=>p.category).filter(Boolean))].map(c=>`<option value="${esc(c)}">`).join("");
+}
+
+function renderGrid(){
+  const q = $("#search").value.trim().toLowerCase();
+  const list = ordered().filter(p =>
+    (activeFilter==="All" || p.category===activeFilter || p.tags.includes(activeFilter)) &&
+    (!q || [p.title,p.summary,p.description,p.category,...p.tags].join(" ").toLowerCase().includes(q)));
+  if(!list.length){ $("#grid").innerHTML = `<p class="empty">No projects found.</p>`; return; }
+  $("#grid").innerHTML = list.map(p => `
+    <article class="card" data-id="${p.id}">
+      ${p.featured ? '<span class="badge">⭐ Featured</span>' : ""}
+      <img class="thumb" src="${p.images[0] || placeholder(esc(p.title),235)}" alt="${esc(p.title)}" loading="lazy">
+      <div class="card-body">
+        <h3>${esc(p.title)}</h3>
+        <p>${esc(p.summary)}</p>
+        <div class="chips">${p.tags.map(t=>`<span class="chip">${esc(t)}</span>`).join("")}</div>
+        <div class="meta"><span>${fmtDate(p.date)}</span><span>
+          ${p.live ? `<a href="${esc(p.live)}" target="_blank" onclick="event.stopPropagation()">Live Demo ↗</a>` : ""}
+          ${p.github ? `<a href="${esc(p.github)}" target="_blank" onclick="event.stopPropagation()">GitHub ↗</a>` : ""}
+        </span></div>
+      </div>
+      ${isAdmin ? `<div class="admin-actions" onclick="event.stopPropagation()">
+        <button class="btn sm ghost" onclick="move('${p.id}',-1)" title="Move up">↑</button>
+        <button class="btn sm ghost" onclick="move('${p.id}',1)" title="Move down">↓</button>
+        <button class="btn sm ghost" onclick="toggleFeatured('${p.id}')">${p.featured?"Unfeature":"⭐ Feature"}</button>
+        <button class="btn sm" onclick="openEditor('${p.id}')">Edit</button>
+        <button class="btn sm danger" onclick="removeProject('${p.id}')">Delete</button>
+      </div>` : ""}
+    </article>`).join("");
+}
+
+function openDetail(id){
+  const p = projects.find(x => x.id === id); if(!p) return;
+  const paras = (p.description || p.summary).split(/\n\s*\n/).map(t=>`<p>${esc(t)}</p>`).join("");
+  $("#detailBody").innerHTML = `
+    <div class="modal-head"><div><span class="chip">${esc(p.category||"Project")}</span> <small style="color:var(--muted)">${fmtDate(p.date)}</small>
+      <h2>${esc(p.title)}</h2></div><button class="icon-btn" onclick="detailDlg.close()">✕</button></div>
+    ${p.images[0] ? `<img src="${p.images[0]}" style="border-radius:12px;width:100%" alt="">` : ""}
+    ${paras}
+    <div class="chips">${p.tags.map(t=>`<span class="chip">${esc(t)}</span>`).join("")}</div>
+    ${p.images.length>1 ? `<div class="gallery">${p.images.slice(1).map(s=>`<img src="${s}" alt="">`).join("")}</div>` : ""}
+    <div class="hero-btns" style="margin-top:20px">
+      ${p.live ? `<a class="btn" href="${esc(p.live)}" target="_blank">Live Demo ↗</a>` : ""}
+      ${p.github ? `<a class="btn ghost" href="${esc(p.github)}" target="_blank">GitHub ↗</a>` : ""}
+    </div>`;
+  detailDlg.showModal();
+}
+
+function refresh(){ renderFilters(); renderGrid(); }
+async function persist(){ await Store.saveAll(projects); refresh(); }
+
+/* =====================================================================
+   7. ADMIN: login, add/edit, delete, reorder, feature
+   ===================================================================== */
+function adminClick(){ isAdmin ? logout() : (loginForm.reset(), $("#loginErr").classList.add("hidden"), loginDlg.showModal()); }
+function setAdmin(on){
+  isAdmin = on; safe(() => sessionStorage.setItem("portfolio.admin", on ? "1" : "0"));
+  $("#adminBar").classList.toggle("hidden", !on); renderGrid();
+}
+function logout(){ setAdmin(false); toast("Logged out of admin mode"); }
+loginForm.onsubmit = e => {
+  e.preventDefault();
+  if(loginForm.pw.value === adminPassword){ loginDlg.close(); setAdmin(true); toast("Welcome back 👋"); }
+  else $("#loginErr").classList.remove("hidden");
+};
+
+function openEditor(id){
+  if(!isAdmin) return;
+  editingId = id || null; editForm.reset();
+  const p = projects.find(x => x.id === id);
+  $("#editTitle").textContent = p ? "Edit project" : "Add project";
+  editImages = p ? [...p.images] : [];
+  if(p){
+    const f = editForm.elements;
+    f.title.value = p.title; f.summary.value = p.summary; f.description.value = p.description || "";
+    f.tags.value = p.tags.join(", "); f.category.value = p.category || ""; f.date.value = p.date || "";
+    f.live.value = p.live || ""; f.github.value = p.github || ""; f.featured.checked = !!p.featured;
+  }
+  renderPreviews(); editDlg.showModal();
+}
+function renderPreviews(){
+  $("#previews").innerHTML = editImages.map((s,i)=>`<div><img src="${s}" alt=""><button type="button" onclick="editImages.splice(${i},1);renderPreviews()">×</button></div>`).join("");
+}
+// Resize uploaded images (max 1200px wide, JPEG) so they fit in localStorage
+function resizeImage(file){
+  return new Promise(res => {
+    const r = new FileReader();
+    r.onload = () => { const img = new Image(); img.onload = () => {
+      const scale = Math.min(1, 1200 / img.width), c = document.createElement("canvas");
+      c.width = img.width * scale; c.height = img.height * scale;
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      res(c.toDataURL("image/jpeg", 0.75));
+    }; img.src = r.result; };
+    r.readAsDataURL(file);
+  });
+}
+imgInput.onchange = async () => {
+  for(const f of imgInput.files) editImages.push(await resizeImage(f));
+  imgInput.value = ""; renderPreviews();
+};
+editForm.onsubmit = async e => {
+  e.preventDefault();
+  const f = editForm.elements;
+  const data = {
+    title: f.title.value.trim(), summary: f.summary.value.trim(), description: f.description.value.trim(),
+    tags: f.tags.value.split(",").map(t=>t.trim()).filter(Boolean), category: f.category.value.trim(),
+    date: f.date.value, live: f.live.value.trim(), github: f.github.value.trim(),
+    featured: f.featured.checked, images: editImages
+  };
+  if(editingId) Object.assign(projects.find(p=>p.id===editingId), data);
+  else projects.unshift({ id: uid(), ...data });
+  editDlg.close(); await persist(); toast(editingId ? "Project updated ✓" : "Project added ✓");
+};
+async function removeProject(id){
+  const p = projects.find(x=>x.id===id);
+  if(!confirm(`Delete "${p.title}"? This cannot be undone.`)) return;
+  projects = projects.filter(x=>x.id!==id); await persist(); toast("Project deleted");
+}
+async function toggleFeatured(id){ const p = projects.find(x=>x.id===id); p.featured = !p.featured; await persist(); }
+async function move(id, dir){
+  // Swap with the neighbour in the same group (featured or not), as displayed
+  const view = ordered(), i = view.findIndex(p=>p.id===id), j = i + dir;
+  if(j<0 || j>=view.length || view[j].featured !== view[i].featured) return;
+  [view[i], view[j]] = [view[j], view[i]]; projects = view; await persist();
+}
+
+/* =====================================================================
+   8. UI WIRING: theme, nav, scrollspy, contact form
+   ===================================================================== */
+const savedTheme = safe(() => localStorage.getItem("portfolio.theme")) || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+function applyTheme(t){ document.documentElement.dataset.theme = t; themeBtn.textContent = t==="dark" ? "☀️" : "🌙"; safe(() => localStorage.setItem("portfolio.theme", t)); }
+applyTheme(savedTheme);
+themeBtn.onclick = () => applyTheme(document.documentElement.dataset.theme==="dark" ? "light" : "dark");
+menuBtn.onclick = () => links.classList.toggle("open");
+links.querySelectorAll("a").forEach(a => a.onclick = () => links.classList.remove("open"));
+
+// Highlight the nav link of the section currently on screen
+const spy = new IntersectionObserver(entries => entries.forEach(en => {
+  if(en.isIntersecting) links.querySelectorAll("a").forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + en.target.id));
+}), { rootMargin: "-45% 0px -50% 0px" });
+document.querySelectorAll("main section").forEach(s => spy.observe(s));
+
+$("#search").oninput = renderGrid;
+$("#filters").onclick = e => { const b = e.target.closest("[data-f]"); if(b){ activeFilter = b.dataset.f; refresh(); } };
+$("#grid").onclick = e => { const c = e.target.closest(".card"); if(c) openDetail(c.dataset.id); };
+
+// Contact form: opens the visitor's email app. For real delivery, point the
+// form at Formspree / Netlify Forms (see the README).
+contactForm.onsubmit = e => {
+  e.preventDefault();
+  const f = contactForm.elements;
+  location.href = `mailto:${PROFILE.email}?subject=${encodeURIComponent("Portfolio contact from " + f.name.value)}&body=${encodeURIComponent(f.message.value + "\n\n— " + f.name.value + " (" + f.email.value + ")")}`;
+  contactForm.reset(); toast("Opening your email app…");
+};
+
+/* =====================================================================
+   9. START
+   ===================================================================== */
+(async function init(){
+  profile = (await Store.getProfile()) ?? PROFILE;
+  adminPassword = (await Store.getPassword()) ?? ADMIN_PASSWORD;
+  renderProfile();
+  projects = (await Store.getAll()) ?? SAMPLE_PROJECTS;
+  setAdmin(isAdmin);
+  refresh();
+})();
+
+/* =====================================================================
+   10. WEBSITE EDITOR (admin only): profile, what I do, skills, timeline, password
+   ===================================================================== */
+function openSiteEditor(){
+  if(!isAdmin) return;
+  const f = siteForm.elements, P = profile;
+  PROFILE_FIELDS.forEach(k => f[k].value = P[k] || "");
+  f.newpw.value = "";
+  editor = {
+    whatIDo: [...(P.whatIDo || [])],
+    skills: Object.entries(P.skills || {}).map(([name, items]) => ({ name, items: [...items] })),
+    timeline: (P.timeline || []).map(t => ({ ...t }))
+  };
+  drawEditor(); siteDlg.showModal();
+}
+function drawEditor(focusId){
+  const E = editor;
+  $("#whatRows").innerHTML = E.whatIDo.map((w, i) => `
+    <div class="srow">
+      <input value="${esc(w)}" placeholder="e.g. Backend development with Spring Boot" oninput="editor.whatIDo[${i}]=this.value">
+      <button type="button" class="btn sm danger" onclick="editor.whatIDo.splice(${i},1);drawEditor()">✕</button>
+    </div>`).join("");
+  $("#skillRows").innerHTML = E.skills.map((g, gi) => `
+    <div class="grp">
+      <div class="srow">
+        <input value="${esc(g.name)}" placeholder="Group name, e.g. Frontend" oninput="editor.skills[${gi}].name=this.value">
+        <button type="button" class="btn sm danger" onclick="editor.skills.splice(${gi},1);drawEditor()">Delete group</button>
+      </div>
+      <div class="chips" style="margin-bottom:8px">
+        ${g.items.map((s, si) => `<span class="chip">${esc(s)} <button type="button" class="x" onclick="editor.skills[${gi}].items.splice(${si},1);drawEditor('skillAdd${gi}')">×</button></span>`).join("")}
+      </div>
+      <input id="skillAdd${gi}" placeholder="Type a skill and press Enter" onkeydown="addSkill(event,${gi})">
+    </div>`).join("");
+  $("#timelineRows").innerHTML = E.timeline.map((t, i) => `
+    <div class="grp">
+      <div class="form-grid">
+        <div><label>When</label><input value="${esc(t.when)}" placeholder="2024 – Present" oninput="editor.timeline[${i}].when=this.value"></div>
+        <div><label>Title</label><input value="${esc(t.title)}" placeholder="Role · Company" oninput="editor.timeline[${i}].title=this.value"></div>
+        <div class="full"><label>Details</label><input value="${esc(t.text)}" oninput="editor.timeline[${i}].text=this.value"></div>
+      </div>
+      <button type="button" class="btn sm danger" style="margin-top:10px" onclick="editor.timeline.splice(${i},1);drawEditor()">Delete entry</button>
+    </div>`).join("");
+  if(focusId) document.getElementById(focusId)?.focus();
+}
+function addWhat(){ editor.whatIDo.push(""); drawEditor(); }
+function addSkillGroup(){ editor.skills.push({ name: "", items: [] }); drawEditor(); }
+function addTimelineRow(){ editor.timeline.push({ when: "", title: "", text: "" }); drawEditor(); }
+function addSkill(e, gi){
+  if(e.key !== "Enter") return;
+  e.preventDefault();                       // Enter adds the skill instead of submitting the form
+  const v = e.target.value.trim();
+  if(!v) return;
+  editor.skills[gi].items.push(v);
+  drawEditor("skillAdd" + gi);
+}
+siteForm.onsubmit = async e => {
+  e.preventDefault();
+  if(!isAdmin) return;
+  const f = siteForm.elements;
+  if(f.newpw.value && f.newpw.value.length < 4){ toast("Password must be at least 4 characters"); return; }
+  const P = { ...profile };
+  PROFILE_FIELDS.forEach(k => P[k] = f[k].value.trim());
+  P.whatIDo = editor.whatIDo.map(s => s.trim()).filter(Boolean);
+  P.skills = Object.fromEntries(editor.skills.filter(g => g.name.trim()).map(g => [g.name.trim(), g.items]));
+  P.timeline = editor.timeline.filter(t => t.title.trim());
+  if(f.newpw.value){ adminPassword = f.newpw.value; await Store.savePassword(adminPassword); }
+  profile = P;
+  await Store.saveProfile(P);
+  siteDlg.close(); renderProfile(); toast("Website updated ✓");
+};
+</script>
+</body>
+</html>
