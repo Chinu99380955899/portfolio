@@ -146,6 +146,45 @@ dialog::backdrop{background:rgba(10,12,30,.6);backdrop-filter:blur(3px)}
 .grp{border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px}
 .grp .chip{display:inline-flex;align-items:center;gap:4px}
 .grp .chip .x{background:none;border:0;color:inherit;cursor:pointer;font-weight:700;padding:0 0 0 2px}
+/* ---------- Mobile & tablet responsiveness ---------- */
+input,textarea,select{font-size:16px}          /* stops iPhone zooming in on form fields */
+.wrap{padding:0 16px}
+.grid{grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr))}
+.skill-grid{grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr))}
+.srow{flex-wrap:wrap}
+.srow input{min-width:0}
+.links a{padding:10px 14px}
+.contact form .btn{width:100%;justify-content:center}
+.card,.box{min-width:0}
+@media (max-width:820px){
+  .toolbar input{max-width:none;width:100%}
+  .gallery{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:600px){
+  section{padding:60px 0}
+  #home{padding:90px 0 64px}
+  h2{font-size:1.6rem}
+  .sub{margin-bottom:24px}
+  .hero-btns .btn{flex:1 1 100%;justify-content:center}
+  .btn{padding:10px 18px}
+  .modal{padding:20px}
+  .modal-head h2{font-size:1.3rem}
+  .card-body{padding:16px}
+  .meta{flex-wrap:wrap;gap:8px}
+  .meta a{margin-left:0;margin-right:12px}
+  #adminBar .btn{padding:6px 10px}
+  footer .wrap{flex-direction:column;text-align:center;justify-content:center}
+  .timeline{padding-left:20px;margin-left:4px}
+  .tl::before{left:-27px}
+  dialog{width:96vw;max-height:92vh;border-radius:14px}
+  .grp{padding:10px}
+  .previews img{width:76px;height:48px}
+}
+@media (max-width:380px){
+  #home h1{font-size:2.1rem}
+  .chip{font-size:.75rem}
+  .logo{font-size:1rem}
+}
 </style>
 </head>
 <body>
